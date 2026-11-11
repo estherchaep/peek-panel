@@ -2,6 +2,8 @@
 
 Open content in a panel that slides over your page, while a slim strip of the page stays visible beside it. Hover the strip to peek at what's behind; click it, swipe it or press Esc to slide the panel away.
 
+https://github.com/user-attachments/assets/17d9ae2c-57e7-4c72-acec-befc8c82d5b4
+
 **[See the live demo →](https://estherchaep.github.io/peek-panel/)**
 
 Works on any website: plain HTML, Webflow, WordPress, Squarespace, React, Vue and more. On phones the strip moves to the top and the panel slides up.
