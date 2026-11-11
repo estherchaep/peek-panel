@@ -2,12 +2,6 @@
 
 An overlay panel with a **peek strip**. Open a case study (or any panel) over your page and leave a slim strip of the page visible beside it. Hover the strip and the panel slides aside to give a glimpse of what's behind. Click it, swipe it, drag the edge, or press Esc, and the panel springs out of the way.
 
-- **Works everywhere:** one web component, `<peek-panel>`, in plain HTML, Webflow, WordPress, React, Vue, Svelte, Angular and others
-- **Phone layout built in:** below 810px wide the strip runs across the top and the panel slides up and down
-- **Accessible:** focus moves into the overlay and stays there, Esc closes it, focus returns to the button that opened it, and reduced motion is respected
-- **Nice details:** the page behind is usable again the moment closing starts, videos behind it pause while it's open, and the spring motion matches Framer's *Time* and *Bounce*
-- **Small:** about 6 KB gzipped, no dependencies
-
 **[Live demo →](https://estherchaep.github.io/peek-panel/)**
 
 ## Install
