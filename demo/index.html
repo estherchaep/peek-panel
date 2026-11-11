@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>peek-panel</title>
+  <meta name="description" content="peek-panel: an overlay with a peek strip. Hover to glimpse the page behind; click, swipe or press Esc to slide it away." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --hairline: rgba(0, 0, 0, 0.06);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #fafafa;
+      color: var(--ink);
+      font: 16px/1.55 "IBM Plex Sans", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* The one card. On hover its white face slides right, the same way the overlay
+       peeks, revealing an "OPEN" strip behind it: a small preview of the effect. */
+    .card {
+      --card-strip: 18px;
+      --card-peek-time: 0.15s;
+      --card-ease: cubic-bezier(0.42, 0, 0.58, 1); /* the overlay's peek easing */
+      all: unset;
+      box-sizing: border-box;
+      position: relative;
+      display: block;
+      width: min(380px, 100%);
+      aspect-ratio: 222 / 119;
+      border-radius: 8px;
+      overflow: hidden;
+      isolation: isolate;
+      cursor: pointer;
+      background: rgba(229, 229, 229, 0.7); /* the strip behind the face */
+      box-shadow: 0 0 0 1px rgba(229, 229, 229, 0.7); /* hairline border */
+    }
+    .card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+    .card-open {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--card-strip);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      rotate: 180deg; /* reads bottom to top */
+      font-size: 9px;
+      letter-spacing: 0.34em;
+      padding-bottom: 0.34em; /* balance the trailing letter space */
+      color: #000;
+    }
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 43px;
+      background: #fff;
+      border-radius: 7px;
+      transition: translate var(--card-peek-time) var(--card-ease);
+    }
+    .card:hover .card-face, .card:focus-visible .card-face { translate: var(--card-strip) 0; }
+    .card-eyebrow { font-size: 16px; letter-spacing: 0.02em; line-height: 1; color: #737373; }
+    .card-title { margin: 22px 0 20px; font-size: 24px; line-height: 1; color: #000; }
+    .card-desc { max-width: 275px; font-size: 16px; line-height: 22px; color: #000; }
+    @media (hover: none) {
+      .card:active .card-face { translate: var(--card-strip) 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .card-face { transition-duration: 0.01s; }
+    }
+
+    /* The overlay */
+    peek-panel {
+      --peek-backdrop: rgba(250, 250, 250, 0.55);
+      --peek-panel-background: #fff;
+      --peek-radius: 28px;
+      --peek-radius-top: 24px;
+      --peek-shadow: 0 0 1px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04), 0 32px 80px rgba(0, 0, 0, 0.08);
+    }
+    .sheet { max-width: 640px; padding: 64px 56px 96px; }
+    .back {
+      all: unset;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+    .back:hover { color: var(--ink); }
+    .back:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+    .sheet h2 { margin: 40px 0 12px; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+    .lede { margin: 0 0 40px; font-size: 18px; color: var(--muted); }
+    .features { list-style: none; margin: 0; padding: 0; }
+    .features li { padding: 18px 0; border-top: 1px solid var(--hairline); }
+    .features li:last-child { border-bottom: 1px solid var(--hairline); }
+    .features strong { display: block; font-weight: 500; margin-bottom: 2px; }
+    .features span { color: var(--muted); font-size: 15px; }
+    .hint { margin: 32px 0 0; font-size: 14px; color: var(--muted); }
+    kbd { font: inherit; font-size: 12px; padding: 1px 6px; border: 1px solid var(--hairline); border-radius: 5px; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06); }
+
+    @media (max-width: 809px) {
+      .sheet { padding: 32px 24px 80px; }
+      .sheet h2 { margin-top: 28px; font-size: 26px; }
+    }
+  </style>
+  <script type="module" src="../dist/peek-panel.js"></script>
+</head>
+<body>
+  <button class="card" id="open-demo" data-peek-open="demo">
+    <span class="card-open" aria-hidden="true">CLICK TO OPEN</span>
+    <span class="card-face">
+      <span class="card-eyebrow">WEB COMPONENT</span>
+      <span class="card-title">peek-panel</span>
+      <span class="card-desc">A slide-over panel that never loses sight of where you came from.</span>
+    </span>
+  </button>
+
+  <peek-panel id="demo" label="Close overlay" dialog-label="About peek-panel">
+    <div class="sheet">
+      <button class="back" data-peek-close><span aria-hidden="true">←</span> Back</button>
+      <h2>A panel that remembers where you came from</h2>
+      <p class="lede">peek-panel opens content over your page while keeping a slim strip of the page in view, so going back always feels one step away.</p>
+      <ul class="features">
+        <li><strong>Peek</strong><span>Hover the strip and the panel slides aside to reveal the page behind.</span></li>
+        <li><strong>Many ways out</strong><span>Click or tap the strip, drag the edge, press Esc, or use any Back button.</span></li>
+        <li><strong>Natural motion</strong><span>Springs that slide in and out, with Time and Bounce you can tune.</span></li>
+        <li><strong>Phone layout</strong><span>On small screens the strip moves to the top and the panel slides up.</span></li>
+        <li><strong>Accessible</strong><span>Focus moves in and stays inside, then returns where you were. Reduced motion is respected.</span></li>
+        <li><strong>Drop-in</strong><span>One tag that works in plain HTML and any framework, with no dependencies.</span></li>
+      </ul>
+      <p class="hint">Try it: hover the strip beside this panel, then click it, or press <kbd>Esc</kbd>.</p>
+    </div>
+  </peek-panel>
+</body>
+</html>

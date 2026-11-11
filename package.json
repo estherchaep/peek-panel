@@ -1,0 +1,59 @@
+{
+  "name": "peek-panel",
+  "version": "0.1.0",
+  "description": "An overlay panel with a peek strip: hover to glimpse the page behind, click, swipe or press Esc to slide it away. A framework-free web component.",
+  "keywords": [
+    "overlay",
+    "modal",
+    "dialog",
+    "drawer",
+    "web-component",
+    "custom-element",
+    "peek",
+    "portfolio",
+    "case-study"
+  ],
+  "license": "MIT",
+  "author": "Esther Park",
+  "homepage": "https://github.com/estherchaep/peek-panel#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estherchaep/peek-panel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/estherchaep/peek-panel/issues"
+  },
+  "type": "module",
+  "main": "./dist/peek-panel.js",
+  "module": "./dist/peek-panel.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/peek-panel.js"
+    },
+    "./min": "./dist/peek-panel.min.js"
+  },
+  "unpkg": "./dist/peek-panel.min.js",
+  "jsdelivr": "./dist/peek-panel.min.js",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": true,
+  "scripts": {
+    "build": "npm run build:esm && npm run build:min && npm run build:types",
+    "build:esm": "esbuild src/index.ts --bundle --format=esm --target=es2020 --outfile=dist/peek-panel.js",
+    "build:min": "esbuild src/index.ts --bundle --format=iife --global-name=PeekPanel --target=es2020 --minify --outfile=dist/peek-panel.min.js",
+    "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
+    "typecheck": "tsc --noEmit",
+    "demo": "npm run build && node scripts/serve.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0"
+  }
+}
