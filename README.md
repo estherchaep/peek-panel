@@ -72,7 +72,3 @@ import "peek-panel"
 ```
 
 Then use the `<peek-panel>` tag as above. See [using it in frameworks](https://github.com/estherchaep/peek-panel/blob/main/docs/REFERENCE.md#using-it-in-frameworks) for React and Vue tips.
-
-## License
-
-MIT, free to use in personal and commercial projects. © Esther Park
