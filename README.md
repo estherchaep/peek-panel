@@ -8,7 +8,7 @@ An overlay panel with a **peek strip**. Open a case study (or any panel) over yo
 - **Nice details:** the page behind is usable again the moment closing starts, videos behind it pause while it's open, and the spring motion matches Framer's *Time* and *Bounce*
 - **Small:** about 6 KB gzipped, no dependencies
 
-> Demo: run `npm run demo` and open http://localhost:5173/demo/
+**[Live demo →](https://estherchaep.github.io/peek-panel/)**
 
 ## Install
 
